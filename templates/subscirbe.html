@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../static/vars.css" />
+  <link rel="stylesheet" href="../static/style.css" />
+
+  <style>
+    a,
+    button,
+    input,
+    select,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    * {
+      margin: 0;
+      padding: 0;
+      border: none;
+      text-decoration: none;
+      appearance: none;
+      background: none;
+
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+  <title>THP-数据订阅</title>
+</head>
+
+<body>
+  <div class="subscribe-app">
+    <div class="right-botton-light"></div>
+    <div class="left-up-light"></div>
+    <div class="tong-ji">
+      同济大学
+      <br />
+      软件工程
+    </div>
+
+    <div class="connectIoT">
+      <div class="button-connect">
+        <div class="Connect">连接</div>
+      </div>
+      <div class="button-disconnect">
+        <div class="Disconnect">断开连接</div>
+      </div>
+    </div>
+
+    <div class="sub-topic" >
+      <div class="button-1" data-action="date">
+        <div class="date">日期</div>
+      </div>
+      <div class="button-1" data-action="temperature">
+        <div class="temperature">温度</div>
+      </div>
+      <div class="button-1" data-action="pressure">
+        <div class="pressure">气压</div>
+      </div>
+      <div class="button-1" data-action="humidity">
+        <div class="humidity">湿度</div>
+      </div>
+    </div>
+
+    <div class="confirm">
+      <div class="button-confirm" data-action="12">
+        <div class="confirm">确认</div>
+      </div>
+      <div class="button-finish" data-action="13">
+        <div class="finish">完成</div>
+      </div>
+    </div>
+
+    <div class="topic-publish">选择主题</div>
+    <div class="thp-data-publish">
+      <span>
+        <span class="thp-data-publish-span">
+          THP-Data
+          <br />
+        </span>
+        <span class="thp-data-publish-span2">订阅</span>
+      </span>
+    </div>
+    <div class="intro">
+      从数据文件读取温度、湿度、气压传感器数据或其他类型的数据，并通过阿里云IoT平台MQTT代理发布。
+    </div>
+    <div class="publish">
+      <div class="logs"></div>
+      <div class="title">订阅日志</div>
+    </div>
+    <img class="illustration" src="../static/illustration0.png" alt="Illustration of Computers" />
+  </div>
+
+  <!-- ...（按键脚本）... -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      var connected = false;  // 跟踪连接状态
+      var statusInterval; // 用于定期检查发布状态的变量
+      var recieving = false; // 跟踪是否正在发布数据
+
+      function updateLog(timestamp, message) {
+        $('.logs').append('<div>' + timestamp + ': ' + message + '</div>');
+      }
+      function Log(message) {
+        $('.logs').append('<div>' + message + '</div>');
+      }
+
+      $('.button-connect').click(function () {
+        $.ajax({
+          type: 'POST',
+          url: '/connect',
+          success: function (response) {
+            connected = response.status === 'connected';
+            updateLog(response.timestamp, response.message);
+            // 更新按钮状态
+            $('.button-connect').prop('disabled', connected);
+            $('.button-disconnect').prop('disabled', !connected);
+          },
+          error: function () {
+            updateLog('错误: 无法连接。');
+          }
+        });
+      });
+
+      $('.button-disconnect').click(function () {
+        $.ajax({
+          type: 'POST',
+          url: '/disconnect',
+          success: function (response) {
+            connected = response.status === 'disconnected';
+            updateLog(response.timestamp, response.message);
+          }
+        });
+      });
+
+      $('.button-confirm').click(function () {
+        $.ajax({
+          type: 'POST',
+          url: '/subPost',
+          success: function (response) {
+            if (response.status === 'started') {
+              recieving = true;
+                // 每秒检查一次状态
+                statusInterval = setInterval(checkRecieveStatus, 1000); // 开始定期检查发布状态
+              }
+
+          }
+        });
+      });
+
+      function checkRecieveStatus() {
+        $.ajax({
+          type: 'GET',
+          url: '/recieveStatus',
+          success: function (response) {
+            if (response.error) {
+              Log('错误: ' + response.error);
+              clearInterval(statusInterval);  // 停止检查状态
+            } else if (response.complete) {
+              Log('发布完成。已发布记录总数: ' + response.count);
+              clearInterval(statusInterval);  // 停止检查状态
+            } else {
+              Log('已接收 ' + response.count + response.message);
+            }
+          }
+        });
+      }
+      
+
+
+      $('.button-1').click(function () {
+        $.ajax({
+          type: 'POST',
+          url: '/subPost',
+          success: function (response) {
+            connected = response.status === 'success';
+            updateLog(response.timestamp, response.message);
+          },
+          error: function (xhr, status, error) {
+            updateLog('错误: ' + error);  // 处理错误情况
+          }
+        });
+      });
+
+      $('.button-unsub-post').click(function () {
+        $.ajax({
+          type: 'POST',
+          url: '/unSubPost',
+          success: function (response) {
+            connected = response.status === 'success';
+            updateLog(response.timestamp, response.message);
+          },
+          error: function (xhr, status, error) {
+            updateLog('Error: ' + error);  // 处理错误情况
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

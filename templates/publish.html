@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="../static/vars.css" />
+  <link rel="stylesheet" href="../static/style.css" />
+  <link rel="icon" href="../static/favicon.ico" />
+
+  <style>
+    a,
+    button,
+    input,
+    select,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    * {
+      margin: 0;
+      padding: 0;
+      border: none;
+      text-decoration: none;
+      appearance: none;
+      background: none;
+
+      -webkit-font-smoothing: antialiased;
+    }
+  </style>
+  <title>THP-数据发布</title>
+</head>
+
+<body>
+  <div class="publish-app">
+    <div class="right-botton-light"></div>
+    <div class="left-up-light"></div>
+    <div class="tong-ji">
+      同济大学
+      <br />
+      软件工程
+    </div>
+
+    <div class="connectIoT">
+      <div class="button-connect">
+        <div class="Connect">连接</div>
+      </div>
+      <div class="button-disconnect">
+        <div class="Disconnect">断开连接</div>
+      </div>
+    </div>
+
+    <div class="sub-topic">
+      <div class="button-sub-post">
+        <div class="sub-post">订阅POST</div>
+      </div>
+      <div class="button-unsub-post">
+        <div class="un-sub-post">取消订阅POST</div>
+      </div>
+    </div>
+
+    <div class="publish-data">
+      <div class="button-pub-random">
+        <div class="pub-random">发布随机数据</div>
+      </div>
+      <div class="button-pub-all">
+        <div class="pub-all">发布所有数据</div>
+      </div>
+    </div>
+
+    <div class="topic-publish">主题与发布</div>
+    <div class="thp-data-publish">
+      <span>
+        <span class="thp-data-publish-span">
+          THP-数据
+          <br />
+        </span>
+        <span class="thp-data-publish-span2">发布</span>
+      </span>
+    </div>
+    <div class="intro">
+      从数据文件中读取温度、湿度、气压传感器数据或其他类型的数据，并通过MQTT代理发布。
+    </div>
+    <div class="publish">
+      <div class="logs"></div>
+      <div class="title">发布日志</div>
+    </div>
+    <img class="illustration" src="../static/illustration0.png" alt="Illustration of Computers" />
+  </div>
+
+  <!-- ...（按键脚本）... -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      var connected = false;  // 跟踪连接状态
+      var statusInterval; // 用于定期检查发布状态的变量
+      var publishing = false; // 跟踪是否正在发布数据
+
+      function updateLog(timestamp, message) {
+        $('.logs').append('<div>' + timestamp + ': ' + message + '</div>');
+      }
+      function Log(message) {
+        $('.logs').append('<div>' + message + '</div>');
+      }
+
+      $('.button-connect').click(function () {
+        $.ajax({
+          type: 'POST',
+          url: '/connect',
+          success: function (response) {
+            connected = response.status === 'connected';
+            updateLog(response.timestamp, response.message);
+            // 更新按钮状态
+            $('.button-connect').prop('disabled', connected);
+            $('.button-disconnect').prop('disabled', !connected);
+          },
+          error: function () {
+            updateLog('错误: 无法连接。');
+          }
+        });
+      });
+
+      $('.button-disconnect').click(function () {
+        $.ajax({
+          type: 'POST',
+          url: '/disconnect',
+          success: function (response) {
+            connected = response.status === 'disconnected';
+            updateLog(response.timestamp, response.message);
+          }
+        });
+      });
+
+      $('.button-pub-random').click(function () {
+        $.ajax({
+          type: 'POST',
+          url: '/publishRandom',
+          success: function (response) {
+            connected = response.status === 'success';
+            updateLog(response.timestamp, response.message);
+          },
+          error: function (xhr, status, error) {
+            try {
+              var response = JSON.parse(xhr.responseText);
+              updateLog(response.timestamp, response.message);
+            } catch (e) {
+              updateLog('错误: ' + error);
+            }
+          }
+        });
+      });
+
+      function checkPublishStatus() {
+        $.ajax({
+          type: 'GET',
+          url: '/publishStatus',
+          success: function (response) {
+            if (response.error) {
+              Log('错误: ' + response.error);
+              clearInterval(statusInterval);  // 停止检查状态
+            } else if (response.complete) {
+              Log('发布完成。已发布的记录总数: ' + response.count);
+              clearInterval(statusInterval);  // 停止检查状态
+            } else {
+              Log('已发布 ' + response.count + ' 条记录...');
+            }
+          }
+        });
+      }
+      $('.button-pub-all').click(function () {
+        if (!publishing) {
+          $.ajax({
+            type: 'POST',
+            url: '/startPublish',
+            success: function (response) {
+              updateLog(response.timestamp, response.message);
+              if (response.status === 'started') {
+                publishing = true;
+                $('.pub-all').text('停止'); // 更改按钮文本
+                // 每秒检查一次状态
+                statusInterval = setInterval(checkPublishStatus, 1000); // 开始定期检查发布状态
+              }
+            },
+            error: function (xhr, status, error) {
+              try {
+                var response = JSON.parse(xhr.responseText);
+                updateLog(response.timestamp, response.message);
+              } catch (e) {
+                updateLog('错误: ' + error);
+              }
+            }
+          });
+        } else {
+          $.ajax({
+            type: 'POST',
+            url: '/stopPublish', // 停止发布的路由
+            success: function (response) {
+              publishing = false;
+              $('.pub-all').text('发布所有'); // 恢复按钮文本
+              // 如果有必要，显示最终发布状态
+              clearInterval(statusInterval);  // 停止检查状态
+              Log(response.message);
+            },
+            error: function (xhr, status, error) {
+              Log('错误: ' + error);
+            }
+          });
+        }
+      });
+
+
+      $('.button-sub-post').click(function () {
+        $.ajax({
+          type: 'POST',
+          url: '/subPost',
+          success: function (response) {
+            connected = response.status === 'success';
+            updateLog(response.timestamp, response.message);
+          },
+          error: function (xhr, status, error) {
+            try {
+                var response = JSON.parse(xhr.responseText);
+                updateLog(response.timestamp, response.message);
+              } catch (e) {
+                updateLog('错误: ' + error);  // 处理错误情况
+              }
+          }
+        });
+      });
+
+      $('.button-unsub-post').click(function () {
+        $.ajax({
+          type: 'POST',
+          url: '/unSubPost',
+          success: function (response) {
+            connected = response.status === 'success';
+            updateLog(response.timestamp, response.message);
+          },
+          error: function (xhr, status, error) {
+            try {
+                var response = JSON.parse(xhr.responseText);
+                updateLog(response.timestamp, response.message);
+              } catch (e) {
+                updateLog('错误: ' + error);  // 处理错误情况
+              }
+          }
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>
