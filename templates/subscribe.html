@@ -34,71 +34,102 @@
 
 <body>
     <div class="subscriber-app">
+        <!-- 背景光效 -->
         <div class="right-botton-light"></div>
         <div class="left-up-light"></div>
-        <div class="tong-ji">
-            同济大学
-            <br />
-            软件工程
-        </div>
-        <div class="topic-subscriber">可视化</div>
-        <div class="connectIoT">
-            <div class="button-temperature">
-                <div class="temperature">温度</div>
+        
+        <!-- 头部标识 -->
+        <header class="header-section">
+            <div class="tong-ji">
+                同济大学
+                <br />
+                软件工程
             </div>
-            <div class="button-humidity">
-                <div class="humidity">湿度</div>
-            </div>
-            <div class="button-pressure">
-                <div class="pressure">气压</div>
-            </div>
-        </div>
-        <div class="sub-topic">
-            <div class="button-disconnect">
-                <div class="disconnect">断开连接</div>
-            </div>
-            <div class="button-predict">
-                <div class="Predict">预测</div>
-            </div>
-            <div class="button-saveData">
-                <div class="saveData">保存数据</div>
-            </div>
-        </div>
-        <div class="thp-data-publish">
-            <span>
-                <span class="thp-data-publish-span">
-                    THP-Data<span>THP-数据
-                    <br />
-                </span>
-                <span class="thp-data-subscriber-span2">订阅器</span>
-            </span>
-        </div>
+        </header>
 
-        <div class="intro">
-            您可以在此产品内订阅温度、湿度和气压主题并可视化数据。
-            此外，您可以利用历史信息进行预测。
-        </div>
-        <div class="publish">
-            <div class="alllogs">
-                <div class="input-wrapper">
-                    <input type="checkbox" id="temperature" name="topic" value="temperature">
-                    <label for="temperature">温度</label>
+        <!-- 主要内容区域 -->
+        <main class="main-content">
+            <!-- 左侧内容区 -->
+            <section class="left-section">
+                <div class="thp-data-publish">
+                    <span class="thp-data-publish-span">THP-数据</span>
+                    <span class="thp-data-subscriber-span2">订阅器</span>
                 </div>
-                <div class="input-wrapper">
-                    <input type="checkbox" id="humidity" name="topic" value="humidity">
-                    <label for="humidity">湿度</label>
+                
+                <div class="topic-subscriber">可视化</div>
+                
+                <div class="intro">
+                    您可以在此产品内订阅温度、湿度和气压主题并可视化数据。
+                    此外，您可以利用历史信息进行预测。
                 </div>
-                <div class="input-wrapper">
-                    <input type="checkbox" id="pressure" name="topic" value="pressure">
-                    <label for="pressure">气压</label>
-                </div>
-            </div>
-            <div class="title">订阅日志</div>
-            <div class="logs">
 
-            </div>
-        </div>
+                <!-- 可视化控制区域 -->
+                <div class="control-section">
+                    <div class="control-group">
+                        <h3 class="control-title">数据可视化</h3>
+                        <div class="connectIoT">
+                            <button class="button-temperature" type="button">
+                                <span class="temperature">温度</span>
+                            </button>
+                            <button class="button-humidity" type="button">
+                                <span class="humidity">湿度</span>
+                            </button>
+                            <button class="button-pressure" type="button">
+                                <span class="pressure">气压</span>
+                            </button>
+                        </div>
+                    </div>
 
+                    <!-- 功能控制区域 -->
+                    <div class="control-group">
+                        <h3 class="control-title">功能操作</h3>
+                        <div class="sub-topic">
+                            <button class="button-disconnect" type="button">
+                                <span class="disconnect">断开连接</span>
+                            </button>
+                            <button class="button-predict" type="button">
+                                <span class="Predict">预测</span>
+                            </button>
+                            <button class="button-saveData" type="button">
+                                <span class="saveData">保存数据</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 右侧日志区域 -->
+            <section class="right-section">
+                <div class="publish">
+                    <h2 class="title">订阅日志</h2>
+                    
+                    <!-- 主题选择区域 -->
+                    <div class="alllogs">
+                        <div class="topic-selector">
+                            <h3 class="selector-title">选择订阅主题</h3>
+                            <div class="checkbox-group">
+                                <div class="input-wrapper">
+                                    <input type="checkbox" id="temperature" name="topic" value="temperature">
+                                    <label for="temperature">温度</label>
+                                </div>
+                                <div class="input-wrapper">
+                                    <input type="checkbox" id="humidity" name="topic" value="humidity">
+                                    <label for="humidity">湿度</label>
+                                </div>
+                                <div class="input-wrapper">
+                                    <input type="checkbox" id="pressure" name="topic" value="pressure">
+                                    <label for="pressure">气压</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="logs"></div>
+                </div>
+            </section>
+        </main>
+
+        <!-- 装饰图片 -->
         <img class="illustration" src="../static/computer.png" alt="Illustration of Computers" />
     </div>
 

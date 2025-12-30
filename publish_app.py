@@ -157,4 +157,4 @@ def stop_publish():
   return jsonify({'message': '正在停止发布进程...'})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=5000)

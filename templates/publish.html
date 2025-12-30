@@ -35,58 +35,86 @@
 
 <body>
   <div class="publish-app">
+    <!-- 背景光效 -->
     <div class="right-botton-light"></div>
     <div class="left-up-light"></div>
-    <div class="tong-ji">
-      同济大学
-      <br />
-      软件工程
-    </div>
+    
+    <!-- 头部标识 -->
+    <header class="header-section">
+      <div class="tong-ji">
+        同济大学
+        <br />
+        软件工程
+      </div>
+    </header>
 
-    <div class="connectIoT">
-      <div class="button-connect">
-        <div class="Connect">连接</div>
-      </div>
-      <div class="button-disconnect">
-        <div class="Disconnect">断开连接</div>
-      </div>
-    </div>
+    <!-- 主要内容区域 -->
+    <main class="main-content">
+      <!-- 左侧内容区 -->
+      <section class="left-section">
+        <div class="thp-data-publish">
+          <span class="thp-data-publish-span">THP-数据</span>
+          <span class="thp-data-publish-span2">发布</span>
+        </div>
+        
+        <div class="topic-publish">主题与发布</div>
+        
+        <div class="intro">
+          从数据文件中读取温度、湿度、气压传感器数据或其他类型的数据，并通过MQTT代理发布。
+        </div>
 
-    <div class="sub-topic">
-      <div class="button-sub-post">
-        <div class="sub-post">订阅POST</div>
-      </div>
-      <div class="button-unsub-post">
-        <div class="un-sub-post">取消订阅POST</div>
-      </div>
-    </div>
+        <!-- 连接控制区域 -->
+        <div class="control-section">
+          <div class="control-group">
+            <h3 class="control-title">连接控制</h3>
+            <div class="connectIoT">
+              <button class="button-connect" type="button">
+                <span class="Connect">连接</span>
+              </button>
+              <button class="button-disconnect" type="button">
+                <span class="Disconnect">断开连接</span>
+              </button>
+            </div>
+          </div>
 
-    <div class="publish-data">
-      <div class="button-pub-random">
-        <div class="pub-random">发布随机数据</div>
-      </div>
-      <div class="button-pub-all">
-        <div class="pub-all">发布所有数据</div>
-      </div>
-    </div>
+          <!-- 订阅控制区域 -->
+          <div class="control-group">
+            <h3 class="control-title">订阅管理</h3>
+            <div class="sub-topic">
+              <button class="button-sub-post" type="button">
+                <span class="sub-post">订阅POST</span>
+              </button>
+              <button class="button-unsub-post" type="button">
+                <span class="un-sub-post">取消订阅POST</span>
+              </button>
+            </div>
+          </div>
 
-    <div class="topic-publish">主题与发布</div>
-    <div class="thp-data-publish">
-      <span>
-        <span class="thp-data-publish-span">
-          THP-数据
-          <br />
-        </span>
-        <span class="thp-data-publish-span2">发布</span>
-      </span>
-    </div>
-    <div class="intro">
-      从数据文件中读取温度、湿度、气压传感器数据或其他类型的数据，并通过MQTT代理发布。
-    </div>
-    <div class="publish">
-      <div class="logs"></div>
-      <div class="title">发布日志</div>
-    </div>
+          <!-- 发布控制区域 -->
+          <div class="control-group">
+            <h3 class="control-title">数据发布</h3>
+            <div class="publish-data">
+              <button class="button-pub-random" type="button">
+                <span class="pub-random">发布随机数据</span>
+              </button>
+              <button class="button-pub-all" type="button">
+                <span class="pub-all">发布所有数据</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 右侧日志区域 -->
+      <section class="right-section">
+        <div class="publish">
+          <h2 class="title">发布日志</h2>
+          <div class="logs"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 装饰图片 -->
     <img class="illustration" src="../static/illustration0.png" alt="Illustration of Computers" />
   </div>
 
