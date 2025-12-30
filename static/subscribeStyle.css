@@ -95,6 +95,9 @@
     flex-direction: column;
     gap: 2vw;
     max-width: 500px;
+    min-width: 0;
+    overflow: hidden;
+    padding-right: 2%;
 }
 
 .right-section {
@@ -130,12 +133,13 @@
 
 /* 连接按钮样式 */
 .connectIoT {
-    display: flex;
-    flex-direction: row;
-    gap: 1vw;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.8vw;
+    align-items: stretch;
     justify-content: flex-start;
-    flex-wrap: wrap;
+    width: 100%;
+    max-width: 100%;
 }
 
 .humidity,
@@ -144,28 +148,35 @@
     color: #ffffff;
     text-align: center;
     font-family: "Inter", "Segoe UI", sans-serif;
-    font-size: 1vw;
+    font-size: 0.85vw;
     font-weight: 600;
     position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .button-humidity,
 .button-pressure,
 .button-temperature {
     border-radius: 12px;
-    padding: 1vw 2vw;
+    padding: 0.7vw 1vw;
+    width: 100%;
+    max-width: 100%;
     display: flex;
     flex-direction: row;
-    gap: 8px;
+    gap: 6px;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
+    flex-shrink: 1;
     position: relative;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     font-weight: 600;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    box-sizing: border-box;
 }
 
 .button-temperature {
@@ -200,31 +211,36 @@
 
 /* 订阅Post按钮样式 */
 .sub-topic {
-    display: flex;
-    flex-direction: row;
-    gap: 1vw;
-    align-items: flex-start;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.8vw;
+    align-items: stretch;
     justify-content: flex-start;
-    flex-wrap: wrap;
+    width: 100%;
+    max-width: 100%;
 }
 
 .button-disconnect,
 .button-predict,
 .button-saveData {
     border-radius: 12px;
-    padding: 1vw 2vw;
+    padding: 0.7vw 1vw;
+    width: 100%;
+    max-width: 100%;
     display: flex;
     flex-direction: row;
-    gap: 8px;
+    gap: 6px;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
+    flex-shrink: 1;
     position: relative;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     font-weight: 600;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    box-sizing: border-box;
 }
 
 .button-disconnect {
@@ -263,9 +279,12 @@
     color: #ffffff;
     text-align: center;
     font-family: "Inter", "Segoe UI", sans-serif;
-    font-size: 1vw;
+    font-size: 0.85vw;
     font-weight: 600;
     position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* 按钮样式 */
@@ -519,6 +538,33 @@
     }
 }
 
+@media (max-width: 1200px) {
+    .left-section {
+        max-width: 100%;
+        padding-right: 0;
+    }
+    
+    .button-temperature,
+    .button-humidity,
+    .button-pressure,
+    .button-disconnect,
+    .button-predict,
+    .button-saveData {
+        padding: 1vw 2vw;
+        font-size: 1.2vw;
+        min-width: 80px;
+    }
+    
+    .humidity,
+    .pressure,
+    .temperature,
+    .disconnect,
+    .Predict,
+    .saveData {
+        font-size: 1.2vw;
+    }
+}
+
 @media (max-width: 768px) {
     .thp-data-publish-span,
     .thp-data-subscriber-span2 {
@@ -533,13 +579,35 @@
         font-size: 3vw;
     }
     
+    .connectIoT {
+        grid-template-columns: 1fr;
+    }
+    
+    .sub-topic {
+        grid-template-columns: 1fr;
+    }
+    
     .button-temperature,
     .button-humidity,
     .button-pressure,
     .button-disconnect,
     .button-predict,
     .button-saveData {
-        padding: 2vw 4vw;
-        font-size: 3vw;
+        padding: 2vw 3vw;
+        width: 100%;
+    }
+    
+    .humidity,
+    .pressure,
+    .temperature,
+    .disconnect,
+    .Predict,
+    .saveData {
+        font-size: 3.5vw;
+    }
+    
+    .connectIoT,
+    .sub-topic {
+        gap: 2vw;
     }
 }

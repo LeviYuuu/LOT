@@ -84,7 +84,7 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  padding: 8% 4% 4% 4%;
+  padding: 5% 4% 4% 4%;
   gap: 4%;
   z-index: 5;
 }
@@ -93,8 +93,12 @@
   flex: 0 0 40%;
   display: flex;
   flex-direction: column;
-  gap: 2vw;
-  max-width: 500px;
+  gap: 1.2vw;
+  max-width: 450px;
+  min-width: 0;
+  overflow: hidden;
+  padding-right: 2%;
+  box-sizing: border-box;
 }
 
 .right-section {
@@ -108,14 +112,17 @@
 .control-section {
   display: flex;
   flex-direction: column;
-  gap: 2vw;
-  margin-top: 1vw;
+  gap: 1.2vw;
+  margin-top: 0.5vw;
 }
 
 .control-group {
   display: flex;
   flex-direction: column;
-  gap: 1vw;
+  gap: 0.6vw;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .control-title {
@@ -125,35 +132,46 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin-bottom: 0.5vw;
+  margin-bottom: 0.3vw;
 }
 
 /* 连接按钮样式 */
 .connectIoT {
-  display: flex;
-  flex-direction: row;
-  gap: 1vw;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6vw;
+  align-items: stretch;
   justify-content: flex-start;
-  flex-wrap: wrap;
+  width: 100%;
+  max-width: 100%;
+}
+
+.connectIoT > button {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .button-connect,
 .button-disconnect {
   border-radius: 12px;
-  padding: 1vw 2.5vw;
+  padding: 0.7vw 1vw;
+  width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  flex-shrink: 1;
   position: relative;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 
 .button-connect {
@@ -191,37 +209,51 @@
   color: #ffffff;
   text-align: center;
   font-family: "Inter", "Segoe UI", sans-serif;
-  font-size: 1vw;
+  font-size: 0.85vw;
   font-weight: 600;
   position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* 订阅Post按钮样式 */
 .sub-topic {
-  display: flex;
-  flex-direction: row;
-  gap: 1vw;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6vw;
+  align-items: stretch;
   justify-content: flex-start;
-  flex-wrap: wrap;
+  width: 100%;
+  max-width: 100%;
+}
+
+.sub-topic > button {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .button-sub-post,
 .button-unsub-post {
   border-radius: 12px;
-  padding: 1vw 2.5vw;
+  padding: 0.7vw 1vw;
+  width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  flex-shrink: 1;
   position: relative;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 
 .button-sub-post {
@@ -249,37 +281,45 @@
   color: #ffffff;
   text-align: center;
   font-family: "Inter", "Segoe UI", sans-serif;
-  font-size: 1vw;
+  font-size: 0.85vw;
   font-weight: 600;
   position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* 发布数据按钮样式 */
 .publish-data {
-  display: flex;
-  flex-direction: row;
-  gap: 1vw;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6vw;
+  align-items: stretch;
   justify-content: flex-start;
-  flex-wrap: wrap;
+  width: 100%;
+  max-width: 100%;
 }
 
 .button-pub-random,
 .button-pub-all {
   border-radius: 12px;
-  padding: 1vw 2.5vw;
+  padding: 0.7vw 1vw;
+  width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  flex-shrink: 1;
   position: relative;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   font-weight: 600;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  box-sizing: border-box;
 }
 
 .button-pub-random {
@@ -307,9 +347,12 @@
   color: #ffffff;
   text-align: center;
   font-family: "Inter", "Segoe UI", sans-serif;
-  font-size: 1vw;
+  font-size: 0.85vw;
   font-weight: 600;
   position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* 按钮样式 */
@@ -343,17 +386,20 @@
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-top: 1vw;
+  margin-top: 0.3vw;
+  margin-bottom: 0.3vw;
 }
 
 .thp-data-publish {
   text-align: left;
   font-family: "Inter", "Segoe UI", sans-serif;
-  line-height: 1.2;
+  line-height: 1.1;
   font-weight: 800;
   display: flex;
   flex-direction: column;
-  gap: 0.5vw;
+  gap: 0.2vw;
+  margin-top: 6vw;
+  margin-bottom: 0.3vw;
 }
 
 .thp-data-publish-span {
@@ -365,6 +411,7 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   display: block;
+  line-height: 1.1;
 }
 
 .thp-data-publish-span2 {
@@ -376,6 +423,7 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   display: block;
+  line-height: 1.1;
 }
 
 .intro {
@@ -383,9 +431,10 @@
   text-align: left;
   font-family: "Inter", "Segoe UI", sans-serif;
   font-size: 1vw;
-  line-height: 1.6;
+  line-height: 1.4;
   font-weight: 400;
-  margin-top: 1vw;
+  margin-top: 0.3vw;
+  margin-bottom: 0.3vw;
 }
 
 .publish {
@@ -495,6 +544,31 @@
   }
 }
 
+@media (max-width: 1200px) {
+  .left-section {
+    max-width: 100%;
+    padding-right: 0;
+  }
+  
+  .button-connect,
+  .button-disconnect,
+  .button-sub-post,
+  .button-unsub-post,
+  .button-pub-random,
+  .button-pub-all {
+    padding: 0.9vw 1.5vw;
+  }
+  
+  .Connect,
+  .Disconnect,
+  .sub-post,
+  .un-sub-post,
+  .pub-random,
+  .pub-all {
+    font-size: 1.1vw;
+  }
+}
+
 @media (max-width: 768px) {
   .thp-data-publish-span,
   .thp-data-publish-span2 {
@@ -509,13 +583,34 @@
     font-size: 3vw;
   }
   
+  .connectIoT,
+  .sub-topic,
+  .publish-data {
+    grid-template-columns: 1fr;
+    gap: 2vw;
+  }
+  
   .button-connect,
   .button-disconnect,
   .button-sub-post,
   .button-unsub-post,
   .button-pub-random,
   .button-pub-all {
-    padding: 2vw 4vw;
-    font-size: 3vw;
+    padding: 2.5vw 3vw;
+    width: 100%;
+  }
+  
+  .Connect,
+  .Disconnect,
+  .sub-post,
+  .un-sub-post,
+  .pub-random,
+  .pub-all {
+    font-size: 3.5vw;
+  }
+  
+  .left-section {
+    max-width: 100%;
+    padding: 0 2vw;
   }
 }

@@ -157,4 +157,10 @@ def stop_publish():
   return jsonify({'message': '正在停止发布进程...'})
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    import os
+    # 隐藏Flask开发服务器警告
+    os.environ['FLASK_ENV'] = 'development'
+    import warnings
+    warnings.filterwarnings("ignore", message=".*development server.*")
+    
+    app.run(debug=True, port=5000, use_reloader=False)

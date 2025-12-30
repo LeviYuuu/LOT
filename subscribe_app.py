@@ -241,4 +241,10 @@ def getPredictData():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    import os
+    # 隐藏Flask开发服务器警告
+    os.environ['FLASK_ENV'] = 'development'
+    import warnings
+    warnings.filterwarnings("ignore", message=".*development server.*")
+    
+    app.run(debug=True, port=5001, use_reloader=False)
