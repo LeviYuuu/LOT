@@ -17,8 +17,8 @@
 
 .right-botton-light {
     background: linear-gradient(135deg,
-            rgba(139, 92, 246, 0.4) 0%,
-            rgba(59, 130, 246, 0.3) 100%);
+            var(--light-effect-1) 0%,
+            var(--light-effect-2) 100%);
     border-radius: 50%;
     width: 35vw;
     height: 35vw;
@@ -31,8 +31,8 @@
 
 .left-up-light {
     background: linear-gradient(135deg,
-            rgba(59, 130, 246, 0.4) 0%,
-            rgba(139, 92, 246, 0.3) 100%);
+            var(--light-effect-2) 0%,
+            var(--light-effect-1) 100%);
     border-radius: 50%;
     width: 32vw;
     height: 32vw;
@@ -190,13 +190,13 @@
 }
 
 .button-humidity {
-    background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+    background: linear-gradient(135deg, var(--primary-color-2) 0%, var(--secondary-color-2) 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .button-humidity:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(59, 130, 246, 0.4);
+    box-shadow: 0 8px 16px rgba(6, 182, 212, 0.4);
 }
 
 .button-pressure {
@@ -241,6 +241,7 @@
     letter-spacing: 0.2px;
     white-space: nowrap;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 .button-disconnect {
@@ -253,14 +254,39 @@
     box-shadow: 0 8px 16px rgba(59, 130, 246, 0.4);
 }
 
+.button-disconnect::before,
+.button-predict::before,
+.button-saveData::before,
+.button-temperature::before,
+.button-humidity::before,
+.button-pressure::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.button-disconnect:hover::before,
+.button-predict:hover::before,
+.button-saveData:hover::before,
+.button-temperature:hover::before,
+.button-humidity:hover::before,
+.button-pressure:hover::before {
+    left: 100%;
+}
+
 .button-predict {
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    background: linear-gradient(135deg, var(--primary-color-1) 0%, var(--primary-color-3) 100%);
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .button-predict:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 8px 16px rgba(16, 185, 129, 0.4);
 }
 
 .button-saveData {
@@ -295,6 +321,33 @@
 .button-humidity,
 .button-temperature {
     z-index: 10;
+    position: relative;
+    overflow: hidden;
+}
+
+.button-predict::before,
+.button-saveData::before,
+.button-disconnect::before,
+.button-pressure::before,
+.button-humidity::before,
+.button-temperature::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.button-predict:hover::before,
+.button-saveData:hover::before,
+.button-disconnect:hover::before,
+.button-pressure:hover::before,
+.button-humidity:hover::before,
+.button-temperature:hover::before {
+    left: 100%;
 }
 
 .button-predict:disabled,
@@ -306,6 +359,15 @@
     opacity: 0.5;
     cursor: not-allowed;
     transform: none !important;
+}
+
+.button-predict:disabled::before,
+.button-saveData:disabled::before,
+.button-disconnect:disabled::before,
+.button-pressure:disabled::before,
+.button-humidity:disabled::before,
+.button-temperature:disabled::before {
+    display: none;
 }
 
 .topic-subscriber {
@@ -343,10 +405,10 @@
 }
 
 .thp-data-subscriber-span2 {
-    color: #60a5fa;
+    color: var(--primary-color-1);
     font-family: "Inter", "Segoe UI", sans-serif;
     font-size: 4.5vw;
-    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    background: linear-gradient(135deg, var(--primary-color-1) 0%, var(--primary-color-2) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -430,7 +492,7 @@
     width: 18px;
     height: 18px;
     cursor: pointer;
-    accent-color: #6366f1;
+    accent-color: var(--primary-color-1);
 }
 
 .alllogs input[type="checkbox"]:checked + label {
@@ -448,6 +510,19 @@
     overflow-y: auto;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+}
+
+.logs::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color-1) 0%, var(--primary-color-2) 50%, var(--secondary-color-1) 100%);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
 }
 
 .logs::-webkit-scrollbar {
@@ -460,38 +535,62 @@
 }
 
 .logs::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    background: linear-gradient(135deg, var(--primary-color-1) 0%, var(--primary-color-2) 100%);
     border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .logs::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    background: linear-gradient(135deg, var(--primary-color-3) 0%, var(--secondary-color-2) 100%);
 }
 
 .logs > div {
-    padding: 0.8vw;
-    margin-bottom: 0.5vw;
-    background: rgba(59, 130, 246, 0.05);
-    border-radius: 8px;
-    border-left: 3px solid #3b82f6;
+    padding: 1vw 1.5vw;
+    margin-bottom: 0.8vw;
+    background: rgba(16, 185, 129, 0.05);
+    border-radius: 12px;
+    border-left: 4px solid var(--primary-color-1);
     font-family: "Inter", "Segoe UI", monospace;
     font-size: 0.9vw;
     color: #1e293b;
-    transition: all 0.2s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .logs > div:hover {
-    background: rgba(59, 130, 246, 0.1);
-    transform: translateX(4px);
+    background: rgba(16, 185, 129, 0.1);
+    transform: translateX(8px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 为不同类型的日志添加不同颜色标识 */
+.logs > div[data-type="info"] {
+    border-left-color: var(--primary-color-2);
+    background: rgba(6, 182, 212, 0.05);
+}
+
+.logs > div[data-type="success"] {
+    border-left-color: #10b981;
+    background: rgba(16, 185, 129, 0.05);
+}
+
+.logs > div[data-type="error"] {
+    border-left-color: #ef4444;
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.logs > div[data-type="warning"] {
+    border-left-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.05);
 }
 
 .title {
-    color: #60a5fa;
+    color: var(--primary-color-2);
     text-align: left;
     font-family: "Inter", "Segoe UI", sans-serif;
     font-size: 2vw;
     font-weight: 700;
-    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    background: linear-gradient(135deg, var(--primary-color-2) 0%, var(--primary-color-1) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

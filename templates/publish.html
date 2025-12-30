@@ -1,13 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 
 <head>
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="THP数据传感器实时发布平台" />
+  <meta name="keywords" content="IoT, MQTT, 传感器, 数据发布" />
   <link rel="stylesheet" href="../static/vars.css" />
   <link rel="stylesheet" href="../static/style.css" />
   <link rel="icon" href="../static/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     a,
@@ -126,11 +131,11 @@
       var statusInterval; // 用于定期检查发布状态的变量
       var publishing = false; // 跟踪是否正在发布数据
 
-      function updateLog(timestamp, message) {
-        $('.logs').append('<div>' + timestamp + ': ' + message + '</div>');
+      function updateLog(timestamp, message, type = 'info') {
+        $('.logs').append('<div data-type="' + type + '">' + timestamp + ': ' + message + '</div>');
       }
-      function Log(message) {
-        $('.logs').append('<div>' + message + '</div>');
+      function Log(message, type = 'info') {
+        $('.logs').append('<div data-type="' + type + '">' + message + '</div>');
       }
 
       $('.button-connect').click(function () {
@@ -139,13 +144,13 @@
           url: '/connect',
           success: function (response) {
             connected = response.status === 'connected';
-            updateLog(response.timestamp, response.message);
+            updateLog(response.timestamp, response.message, 'success');
             // 更新按钮状态
             $('.button-connect').prop('disabled', connected);
             $('.button-disconnect').prop('disabled', !connected);
           },
           error: function () {
-            updateLog('错误: 无法连接。');
+            updateLog(new Date().toLocaleString(), '错误: 无法连接。', 'error');
           }
         });
       });
@@ -156,7 +161,7 @@
           url: '/disconnect',
           success: function (response) {
             connected = response.status === 'disconnected';
-            updateLog(response.timestamp, response.message);
+            updateLog(response.timestamp, response.message, 'info');
           }
         });
       });
@@ -167,14 +172,14 @@
           url: '/publishRandom',
           success: function (response) {
             connected = response.status === 'success';
-            updateLog(response.timestamp, response.message);
+            updateLog(response.timestamp, response.message, 'success');
           },
           error: function (xhr, status, error) {
             try {
               var response = JSON.parse(xhr.responseText);
-              updateLog(response.timestamp, response.message);
+              updateLog(response.timestamp, response.message, 'error');
             } catch (e) {
-              updateLog('错误: ' + error);
+              updateLog(new Date().toLocaleString(), '错误: ' + error, 'error');
             }
           }
         });
@@ -186,13 +191,13 @@
           url: '/publishStatus',
           success: function (response) {
             if (response.error) {
-              Log('错误: ' + response.error);
+              Log('错误: ' + response.error, 'error');
               clearInterval(statusInterval);  // 停止检查状态
             } else if (response.complete) {
-              Log('发布完成。已发布的记录总数: ' + response.count);
+              Log('发布完成。已发布的记录总数: ' + response.count, 'success');
               clearInterval(statusInterval);  // 停止检查状态
             } else {
-              Log('已发布 ' + response.count + ' 条记录...');
+              Log('已发布 ' + response.count + ' 条记录...', 'info');
             }
           }
         });

@@ -17,6 +17,18 @@ mqtt_topic_set = f'/sys/{product_key}/{device_name}/thing/service/property/set' 
 import global_var as gv
 filename = "out.csv"
 
+# 在应用启动时自动连接到MQTT服务器
+try:
+    gv.global_var.user_initiated_disconnect = False
+    # 使用默认的ClientID
+    client_id = f"subscriber_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}"
+    module.connect_and_subscribe(client_id, "", "")
+    print("自动连接到MQTT服务器成功")
+except Exception as e:
+    print(f"自动连接到MQTT服务器失败: {e}")
+    import traceback
+    traceback.print_exc()
+
 
 @app.route('/', methods=['GET', 'POST'])
 def index():

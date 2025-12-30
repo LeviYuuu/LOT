@@ -5,64 +5,119 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="THP数据传感器实时订阅平台" />
+  <meta name="keywords" content="IoT, MQTT, 传感器, 数据订阅" />
   <link rel="stylesheet" href="../static/vars.css" />
   <link rel="stylesheet" href="../static/loginStyle.css" />
   <link rel="icon" href="../static/favicon.ico" />
-  <title>IoT数据订阅端</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <title>THP数据传感器平台</title>
 </head>
 
 <body>
-  <div class="register-page">
-    <!-- 标题区域 -->
-    <header class="login-header">
-      <h1 class="io-t-client-platform-thp-data-sensor-subscription">
-        IoT客户端平台
-        <br />
-        THP数据传感器订阅
-      </h1>
-    </header>
-
-    <!-- 表单区域 -->
-    <main class="login-main">
-      <form method="post" class="login-form">
-        <div class="form-group">
-          <label for="ClientID" class="client-id">客户端ID</label>
-          <input class="input-ClientID" type="text" placeholder="输入客户端ID" name="ClientID" id="ClientID" />
+  <div class="login-container">
+    <!-- 背景效果 -->
+    <div class="background-effect"></div>
+    <div class="background-gradient"></div>
+    
+    <!-- 主要内容 -->
+    <div class="login-content">
+      <!-- 左侧装饰区域 -->
+      <div class="login-left">
+        <div class="logo-section">
+          <div class="logo-icon">IoT</div>
+          <div class="logo-text">
+            <h2>THP数据传感器</h2>
+            <p>实时数据订阅平台</p>
+          </div>
         </div>
-
-        <div class="form-group">
-          <label for="access_key_id" class="access-key-id">AccessKey ID</label>
-          <input class="input-AccessKeyID" type="text" placeholder="输入AccessKey ID" name="access_key_id"
-            id="access_key_id" />
+        <div class="login-illustration">
+          <img src="../static/computer.png" alt="IoT数据可视化" />
         </div>
+      </div>
+      
+      <!-- 右侧表单区域 -->
+      <div class="login-right">
+        <div class="form-container">
+          <h1 class="form-title">登录订阅系统</h1>
+          <p class="form-subtitle">连接到MQTT服务器，实时订阅THP传感器数据</p>
+          
+          <form method="post" class="login-form">
+            <div class="form-group">
+            <label for="ClientID" class="form-label">客户端ID</label>
+            <input 
+              class="form-input" 
+              type="text" 
+              name="ClientID" 
+              id="ClientID" 
+              required
+            />
+          </div>
 
-        <div class="form-group">
-          <label for="access_secret" class="access-key-secret">AccessKey Secret</label>
-          <input class="input-AccessKeySecret" type="password" placeholder="输入AccessKey Secret (可选)" name="access_secret"
-            id="access_secret" />
+            <div class="form-group">
+              <label for="access_key_id" class="form-label">AccessKey ID</label>
+              <input 
+                class="form-input" 
+                type="text" 
+                name="access_key_id"
+                id="access_key_id" 
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="access_secret" class="form-label">AccessKey Secret</label>
+              <input 
+                class="form-input" 
+                type="password" 
+                name="access_secret"
+                id="access_secret" 
+              />
+            </div>
+
+            <div class="form-info">
+              <i class="info-icon">ℹ️</i>
+              <span>使用默认Mosquitto服务器时，可跳过AccessKey认证</span>
+            </div>
+
+            <button class="form-button" type="submit">
+              <span class="button-text">登录并订阅</span>
+              <span class="button-icon">→</span>
+            </button>
+          </form>
+          
+          <div class="form-footer">
+            <p>© 2024 IoT数据订阅平台 | 基于Mosquitto MQTT</p>
+          </div>
         </div>
-
-        <button class="rectangle-4" type="submit">
-          <span class="subscribe">订阅</span>
-        </button>
-        
-        <div class="form-hint">
-          注意：如果使用默认的Mosquitto服务器，可以不填写AccessKey ID和Secret
-        </div>
-      </form>
-    </main>
-
-    <!-- 装饰图片 -->
-    <img class="illustration" src="../static/computer.png" alt="Illustration" />
+      </div>
+    </div>
   </div>
 
   <script>
-
-
+    // 添加表单验证和交互效果
+    document.addEventListener('DOMContentLoaded', function() {
+      const formInputs = document.querySelectorAll('.form-input');
+      
+      formInputs.forEach(input => {
+        input.addEventListener('focus', function() {
+          this.parentElement.classList.add('focused');
+        });
+        
+        input.addEventListener('blur', function() {
+          if (!this.value) {
+            this.parentElement.classList.remove('focused');
+          }
+        });
+        
+        // 如果输入框有值，保持聚焦状态
+        if (input.value) {
+          input.parentElement.classList.add('focused');
+        }
+      });
+    });
   </script>
-
-
-
 </body>
 
 </html>

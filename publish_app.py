@@ -74,13 +74,13 @@ def read_and_publish_data(topic, publish_file):
                     rc, request_id = mqtt_client.publish(topic, payload)
                     publish_status['count'] += 1
                     if rc == 0:
-                        print(f"已发布 {publish_status['count']} 条记录。")
+                        print("已发布", publish_status['count'], "条记录。")
                     else:
-                        print(f"属性发布失败, rc={rc}")
-                        publish_status['error'] = f"第 {publish_status['count']} 条发布失败, rc={rc}"
+                        print("属性发布失败, rc=", rc)
+                        publish_status['error'] = "第 " + str(publish_status['count']) + " 条发布失败, rc=" + str(rc)
                         publish_status['complete'] = True
                     time.sleep(1)  # 防止发送过快，根据平台限制可能需要调整
-            print("数据发布完成。发布的记录总数:", {publish_status['count']})
+            print("数据发布完成。发布的记录总数:", publish_status['count'])
     except Exception as e:
         publish_status['error'] = str(e)
     finally:
@@ -120,7 +120,7 @@ def subPost():
     return jsonify({'timestamp': str(datetime.datetime.now()), 'status': 'success', 'message': '已订阅主题: /thing/event/property/post。'})
 
 @app.route('/unSubPost', methods=['POST'])
-def connunSubPostect():
+def un_sub_post():
     if not mqtt_client.is_connected():
         return jsonify({'timestamp': str(datetime.datetime.now()), 'status': 'error', 'message': '尚未连接到MQTT服务器，请先手动连接。'})
     mqtt_client.unsubscribe(mqtt_topic_post)
@@ -146,7 +146,7 @@ def start_publish():
     return jsonify({'timestamp': str(datetime.datetime.now()), 'status': 'started', 'message': '数据发布已开始。'})
 
 @app.route('/publishStatus', methods=['GET'])
-def publish_status():
+def get_publish_status():
     global publish_status
     return jsonify(publish_status)
 

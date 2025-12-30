@@ -1,35 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-cn">
 
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="THP数据传感器实时订阅平台" />
+    <meta name="keywords" content="IoT, MQTT, 传感器, 数据订阅, 可视化" />
     <link rel="stylesheet" href="../static/vars.css" />
     <link rel="stylesheet" href="../static/subscribeStyle.css" />
-
-    <style>
-        a,
-        button,
-        input,
-        select,
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        * {
-            margin: 0;
-            padding: 0;
-            border: none;
-            text-decoration: none;
-            appearance: none;
-            background: none;
-
-            -webkit-font-smoothing: antialiased;
-        }
-    </style>
-    <title>THP-数据订阅</title>
+    <link rel="icon" href="../static/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>THP数据传感器 - 订阅端</title>
 </head>
 
 <body>
@@ -235,7 +219,6 @@
             function checkPublishStatus() {
                 $.ajax({
                     type: 'GET',
-                    url: '/publishStatus',
                     url: '/TopicData',
                     success: function (response) {
                         connected = response.status;

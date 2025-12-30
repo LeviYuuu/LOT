@@ -27,32 +27,52 @@ class MQTTClient:
     def on_connect(self, client, userdata, flags, rc):
         if rc == 0:
             self.connected = True
-            print(f"MQTT已连接 (rc={rc})")
+            # 使用简单的print语句，避免格式化字符串可能导致的问题
+            print("MQTT已连接 (rc=", rc, ")")
         else:
-            print(f"MQTT连接失败 (rc={rc})")
+            # 使用简单的print语句，避免格式化字符串可能导致的问题
+            print("MQTT连接失败 (rc=", rc, ")")
 
     def on_disconnect(self, client, userdata, rc):
         self.connected = False
-        print(f"MQTT已断开连接 (rc={rc})")
+        # 使用简单的print语句，避免格式化字符串可能导致的问题
+        print("MQTT已断开连接 (rc=", rc, ")")
 
     def on_publish(self, client, userdata, mid):
-        print(f"消息已发布 (mid={mid})")
+        # 使用简单的print语句，避免格式化字符串可能导致的问题
+        print("消息已发布 (mid=", mid, ")")
 
     def on_message(self, client, userdata, msg):
-        print(f"已接收消息 (topic={msg.topic}, payload={msg.payload.decode()}, qos={msg.qos})")
+        # 使用简单的print语句，避免格式化字符串可能导致的问题
+        print("已接收消息 (topic=", msg.topic, ", payload=", msg.payload.decode(), ", qos=", msg.qos, ")")
 
     def connect(self):
         try:
-            self.client.connect(self.broker, self.port, 60)
+            # 检查MQTT客户端的状态
+            if self.client is None:
+                print("MQTT客户端未初始化")
+                return False
+            
+            print("尝试连接到MQTT服务器:", self.broker, ":", self.port)
+            
+            # 先断开可能存在的连接
+            try:
+                self.client.disconnect()
+            except:
+                pass
+            
+            # 使用connect_async代替connect，避免阻塞
+            self.client.connect_async(self.broker, self.port, 60)
             self.client.loop_start()  # 开启后台循环
             print("MQTT客户端正在连接...")
-            # 等待连接成功
-            time.sleep(1)
-            if not self.connected:
-                print("MQTT客户端连接超时。")
-            return self.connected
+            
+            # 直接返回，不等待连接完成
+            # 连接状态会通过on_connect回调更新
+            return True
         except Exception as e:
-            print(f"MQTT连接错误: {e}")
+            print("MQTT连接错误:", e)
+            import traceback
+            traceback.print_exc()
             return False
 
     def disconnect(self):
@@ -62,12 +82,20 @@ class MQTTClient:
 
     def publish(self, topic, message):
         try:
+            if not self.connected:
+                print("MQTT客户端未连接，无法发布消息。")
+                return -1, 0
             if isinstance(message, dict):
-                message = json.dumps(message)
+                message_str = json.dumps(message)
+                print(f"[DEBUG] 发布消息到主题 {topic}: {message_str[:100]}...")
+                message = message_str
+            else:
+                print(f"[DEBUG] 发布消息到主题 {topic}: {message[:100]}...")
             result = self.client.publish(topic, message)
+            print(f"[DEBUG] 发布结果: rc={result.rc}, mid={result.mid}")
             return result.rc, result.mid
         except Exception as e:
-            print(f"发布错误: {e}")
+            print("[DEBUG] 发布错误:", e)
             return -1, 0
     
     def subscribe(self, topic):
@@ -75,7 +103,7 @@ class MQTTClient:
             result, mid = self.client.subscribe(topic)
             return result, mid
         except Exception as e:
-            print(f"订阅错误: {e}")
+            print("订阅错误:", e)
             return -1, 0
     
     def unsubscribe(self, topic):
@@ -83,7 +111,7 @@ class MQTTClient:
             result, mid = self.client.unsubscribe(topic)
             return result, mid
         except Exception as e:
-            print(f"取消订阅错误: {e}")
+            print("取消订阅错误:", e)
             return -1, 0
 
     def is_connected(self):
@@ -108,9 +136,11 @@ class MQTTClient:
         # 上报属性
         rc, request_id = self.publish(topic, payload)
         if rc == 0:
-            print("属性上报成功:%r, 请求ID:%r" % (rc, request_id))
+            # 使用简单的print语句，避免格式化字符串可能导致的问题
+            print("属性上报成功:", rc, ", 请求ID:", request_id)
         else:
-            print("属性上报失败, rc=%d" % rc)
+            # 使用简单的print语句，避免格式化字符串可能导致的问题
+            print("属性上报失败, rc=", rc)
     
     # 读取数据并上报
     '''def read_and_post_data(self, publish_file, topic):

@@ -1,7 +1,28 @@
 /* Figma Styles of your File */
 :root {
+  /* 应用尺寸变量 */
   --app-width: 100vw;
   --app-height: 100vh;
   --max-app-width: 1440px;
   --max-app-height: 1024px;
+  
+  /* 新的颜色方案 - 清新绿色/青色 */
+  --primary-color-1: #10b981; /* 主色1 - 绿色 */
+  --primary-color-2: #06b6d4; /* 主色2 - 青色 */
+  --primary-color-3: #34d399; /* 主色3 - 浅绿色 */
+  --primary-color-4: #0891b2; /* 主色4 - 深青色 */
+  
+  --secondary-color-1: #14b8a6; /* 辅助色1 - 蓝绿色 */
+  --secondary-color-2: #22d3ee; /* 辅助色2 - 亮青色 */
+  
+  --bg-gradient-1: rgba(15, 23, 42, 1); /* 背景色1 */
+  --bg-gradient-2: rgba(18, 83, 78, 1); /* 背景色2 */
+  
+  --light-effect-1: rgba(16, 185, 129, 0.4); /* 光影效果1 */
+  --light-effect-2: rgba(6, 182, 212, 0.3); /* 光影效果2 */
+  
+  --success-color: #10b981; /* 成功色 */
+  --error-color: #ef4444; /* 错误色 */
+  --warning-color: #f59e0b; /* 警告色 */
+  --info-color: #3b82f6; /* 信息色 */
 }

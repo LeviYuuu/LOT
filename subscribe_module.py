@@ -32,7 +32,8 @@ def on_connect(client, userdata, flags, rc):
 
 def on_message(client, userdata, msg):
     """接收消息回调函数"""
-    print(f"已接收主题 {msg.topic} 的消息: {msg.payload.decode()}")
+    print(f"\n[DEBUG] 已接收主题 {msg.topic} 的消息")
+    print(f"[DEBUG] 消息负载: {msg.payload.decode()}")
     # 创建一个模拟stomp frame的对象，用于兼容transform_data函数
     class MockFrame:
         def __init__(self, body):
@@ -50,9 +51,18 @@ def on_publish(client, userdata, mid):
     print(f"消息已发布，mid: {mid}")
 
 def disconnect_mqtt():
-    global client, clientId, accessKey, accessSecret
+    global client, clientId, accessKey, accessSecret, connection_check_thread
     try:
+        # 停止连接检查
+        if hasattr(gv.global_var, 'connection_check_running'):
+            gv.global_var.connection_check_running = False
+        
+        # 等待连接检查线程结束
+        if connection_check_thread and connection_check_thread.is_alive():
+            time.sleep(1)  # 给线程一点时间来结束
+        
         if client:
+            client.loop_stop()
             client.disconnect()
             gv.global_var.user_initiated_disconnect = True  # 设置断开标志
             # 清除clientID、accessKey和accessSecret
@@ -65,13 +75,32 @@ def disconnect_mqtt():
 
 def connect_and_subscribe(client_id, username, password):
     """连接到Mosquitto服务器并订阅主题"""
-    global client, clientId, accessKey, accessSecret
-    clientId = client_id
-    accessKey = username
-    accessSecret = password
+    global client, clientId, accessKey, accessSecret, connection_check_thread
     
     try:
-        # 创建MQTT客户端
+        # 停止之前的连接检查
+        if hasattr(gv.global_var, 'connection_check_running'):
+            gv.global_var.connection_check_running = False
+        
+        # 等待连接检查线程结束
+        if connection_check_thread and connection_check_thread.is_alive():
+            time.sleep(1)  # 给线程一点时间来结束
+        
+        # 断开之前的MQTT客户端连接
+        if client:
+            try:
+                client.loop_stop()
+                client.disconnect()
+                print("已断开之前的MQTT客户端连接")
+            except Exception as e:
+                print("断开之前连接时发生错误:", e)
+        
+        # 更新全局变量
+        clientId = client_id
+        accessKey = username
+        accessSecret = password
+        
+        # 创建新的MQTT客户端
         client = mqtt.Client(client_id=clientId)
         
         # 设置回调函数
@@ -94,9 +123,10 @@ def connect_and_subscribe(client_id, username, password):
         schedule.clear('conn-check')
         schedule.every(1).seconds.do(do_check).tag('conn-check')
         
-        # 启动一个新线程以保持连接检查
-        thread = threading.Thread(target=connection_check_timer)
-        thread.start()
+        # 启动新的连接检查线程
+        gv.global_var.connection_check_running = True
+        connection_check_thread = threading.Thread(target=connection_check_timer)
+        connection_check_thread.start()
         
         print("已成功连接到Mosquitto服务器")
         
@@ -123,10 +153,17 @@ def do_check():
             print('尝试重新连接时发生错误:', e)
 
 # 定时任务方法，检查连接状态
+connection_check_thread = None
+
+
 def connection_check_timer():
-    while 1:
-        schedule.run_pending()
-        time.sleep(10)
+    global connection_check_thread
+    try:
+        while gv.global_var.connection_check_running:
+            schedule.run_pending()
+            time.sleep(1)  # 改为每秒运行一次，与schedule的任务间隔一致
+    finally:
+        connection_check_thread = None
 
 #把时间戳转换成字符串
 def timestamp_to_time(timestamp):
@@ -173,7 +210,7 @@ def transform_data(frame):
             prop_data["pressure"] = int(result.get("pressure", None))
         
         ans_data = {}
-        print(str(len(gv.global_var.topic_list)))
+        print(f"[DEBUG] topic_list长度: {len(gv.global_var.topic_list)}")
         
         # 由于我们订阅了所有主题，直接将所有数据添加到ans_data中
         # 不根据topic_list过滤，因为topic_list存储的是MQTT主题，而不是数据字段
@@ -186,6 +223,17 @@ def transform_data(frame):
             ans_data["printed"] = False
             gv.global_var.receive_data.append(ans_data)
             print(format_topicData(ans_data))
+            
+            # 自动保存数据到out.csv
+            try:
+                filename = "out.csv"
+                with open(filename, 'a', newline='') as file:
+                    writer = csv.writer(file)
+                    row = [ans_data.get('time', ''), ans_data.get('temperature', ''), ans_data.get('humidity', ''), ans_data.get('pressure', '')]
+                    writer.writerow(row)
+                print("数据已自动保存到out.csv")
+            except Exception as e:
+                print("保存数据到out.csv失败:", e)
             
     except json.JSONDecodeError as e:
         print(f"JSON解析错误: {e}")

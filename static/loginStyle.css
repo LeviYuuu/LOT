@@ -1,293 +1,413 @@
-.register-page,
-.register-page * {
-  box-sizing: border-box;
-  z-index: 1;
-}
-
 /* 全局样式 */
-html,
-body {
-  height: 100%;
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: "Inter", "Segoe UI", sans-serif;
+  font-family: 'Inter', 'Segoe UI', -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* 填满整个网页的样式 */
-.register-page {
-  background: linear-gradient(135deg,
-      rgba(15, 23, 42, 1) 0%,
-      rgba(30, 41, 59, 1) 50%,
-      rgba(15, 23, 42, 1) 100%);
-  width: 100%;
+html, body {
   height: 100%;
+  width: 100%;
+  overflow: hidden;
+  background: #0f172a;
+}
+
+/* 登录容器 */
+.login-container {
+  position: relative;
+  width: 100%;
+  height: 100vh;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
   overflow: hidden;
-  position: relative;
 }
 
-.register-page::before {
-  content: '';
+/* 背景效果 */
+.background-effect {
   position: absolute;
-  width: 40vw;
-  height: 40vw;
-  background: linear-gradient(135deg,
-      rgba(139, 92, 246, 0.3) 0%,
-      rgba(59, 130, 246, 0.2) 100%);
+  top: -50%;
+  right: -25%;
+  width: 70vw;
+  height: 70vw;
+  background: radial-gradient(circle, var(--light-effect-1) 0%, transparent 70%);
   border-radius: 50%;
-  filter: blur(150px);
-  top: -10%;
-  right: -5%;
-  animation: float 8s ease-in-out infinite;
+  filter: blur(120px);
+  animation: float 12s ease-in-out infinite;
 }
 
-.register-page::after {
-  content: '';
+.background-gradient {
   position: absolute;
-  width: 35vw;
-  height: 35vw;
-  background: linear-gradient(135deg,
-      rgba(59, 130, 246, 0.3) 0%,
-      rgba(139, 92, 246, 0.2) 100%);
+  bottom: -50%;
+  left: -25%;
+  width: 60vw;
+  height: 60vw;
+  background: radial-gradient(circle, var(--light-effect-2) 0%, transparent 70%);
   border-radius: 50%;
-  filter: blur(150px);
-  bottom: -10%;
-  left: -5%;
-  animation: float 6s ease-in-out infinite reverse;
+  filter: blur(100px);
+  animation: float 10s ease-in-out infinite reverse;
 }
 
 @keyframes float {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  50% {
-    transform: translate(20px, -20px) scale(1.1);
-  }
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(30px, -30px) scale(1.1); }
 }
 
-a,
-button,
-input,
-select,
-h1,
-h2,
-h3,
-h4,
-h5,
-* {
-  margin: 0;
-  padding: 0;
-  border: none;
-  text-decoration: none;
-  appearance: none;
-  background: none;
-  -webkit-font-smoothing: antialiased;
-  overflow: visible;
-}
-
-/* 头部区域 */
-.login-header {
+/* 登录内容区域 */
+.login-content {
   position: relative;
   z-index: 10;
-  text-align: center;
-  margin-bottom: 3vw;
-}
-
-.login-main {
-  position: relative;
-  z-index: 10;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 100%;
-  padding: 2vw;
-}
-
-.login-form {
-  position: relative;
-  z-index: 10;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
+  max-width: 1200px;
+  height: 80vh;
+  display: flex;
   border-radius: 24px;
-  padding: 3vw 4vw;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(20px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  width: 100%;
-  max-width: 450px;
+  overflow: hidden;
 }
 
-.form-group {
-  margin-bottom: 1.5vw;
+/* 左侧装饰区域 */
+.login-left {
+  width: 50%;
+  padding: 4rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5vw;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, var(--light-effect-1) 0%, var(--light-effect-2) 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.input-ClientID,
-.input-AccessKeyID,
-.input-AccessKeySecret {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 12px;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  width: 100%;
-  height: 48px;
-  padding: 0 20px;
-  color: #ffffff;
-  font-family: "Inter", "Segoe UI", sans-serif;
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
-
-.input-ClientID:focus,
-.input-AccessKeyID:focus,
-.input-AccessKeySecret:focus {
-  outline: none;
-  border-color: #6366f1;
-  background: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
-}
-
-.input-ClientID::placeholder,
-.input-AccessKeyID::placeholder,
-.input-AccessKeySecret::placeholder {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.client-id,
-.access-key-id,
-.access-key-secret {
-  color: rgba(255, 255, 255, 0.9);
-  text-align: left;
-  font-family: "Inter", "Segoe UI", sans-serif;
-  font-size: 14px;
-  font-weight: 500;
-  display: block;
-}
-
-.subscribeButton {
-  position: absolute;
-  inset: 0;
-}
-
-.rectangle-4 {
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  border-radius: 12px;
-  width: 100%;
-  height: 48px;
-  position: relative;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-  margin-top: 1vw;
-  font-family: "Inter", "Segoe UI", sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-  color: #ffffff;
-  letter-spacing: 0.5px;
-  border: none;
+.logo-section {
   display: flex;
   align-items: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.logo-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--primary-color-1) 0%, var(--primary-color-2) 100%);
+  border-radius: 16px;
+  display: flex;
   justify-content: center;
-}
-
-.rectangle-4:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
-  background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-}
-
-.rectangle-4:active {
-  transform: translateY(0);
-}
-
-.subscribe {
-  color: #ffffff;
-  text-align: center;
-  font-family: "Inter", "Segoe UI", sans-serif;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.form-hint {
-  margin-top: 1.5vw;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 12px;
-  text-align: center;
-  font-family: "Inter", "Segoe UI", sans-serif;
-  line-height: 1.6;
-}
-
-.rectangle-6,
-.rectangle-7,
-.rectangle-62,
-.rectangle-5 {
-  display: none;
-}
-
-.io-t-client-platform-thp-data-sensor-subscription {
-  color: rgba(255, 255, 255, 0.95);
-  text-align: center;
-  font-family: "Inter", "Segoe UI", sans-serif;
-  font-size: 32px;
+  align-items: center;
+  font-size: 2rem;
   font-weight: 700;
-  line-height: 1.4;
+  color: white;
+  box-shadow: 0 8px 24px var(--light-effect-1);
+}
+
+.logo-text h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.5rem;
   background: linear-gradient(135deg, #ffffff 0%, rgba(255, 255, 255, 0.8) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  position: relative;
-  z-index: 10;
-  margin: 0;
 }
 
-.illustration {
-  position: absolute;
-  right: 8%;
-  bottom: 8%;
-  width: 35%;
-  height: auto;
-  opacity: 0.6;
-  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
-  z-index: 5;
+.logo-text p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 400;
+}
+
+.login-illustration {
+  width: 100%;
+  max-width: 400px;
+  opacity: 0.9;
   transition: transform 0.3s ease;
 }
 
-.illustration:hover {
-  transform: scale(1.05);
-  opacity: 0.8;
+.login-illustration:hover {
+  transform: translateY(-10px) scale(1.05);
 }
 
-/* 提示文字样式 */
-form > div {
-  margin-top: 15px;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 12px;
+.login-illustration img {
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+}
+
+/* 右侧表单区域 */
+.login-right {
+  width: 50%;
+  padding: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 400px;
+}
+
+.form-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.5rem;
   text-align: center;
-  font-family: "Inter", "Segoe UI", sans-serif;
-  line-height: 1.6;
+}
+
+.form-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 2.5rem;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.login-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-group {
+  position: relative;
+  width: 100%;
+}
+
+.form-group.focused .form-label {
+  transform: translateY(-25px) scale(0.85);
+  color: var(--primary-color-1);
+}
+
+.form-label {
+  position: absolute;
+  top: 12px;
+  left: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  pointer-events: none;
+  background: #1e293b;
+  padding: 0 0.5rem;
+  border-radius: 4px;
+}
+
+.form-input {
+  width: 100%;
+  height: 52px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--primary-color-1);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 4px var(--light-effect-1);
+}
+
+.form-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.form-input:focus + .form-label,
+.form-input:not(:placeholder-shown) + .form-label {
+  transform: translateY(-25px) scale(0.85);
+  color: var(--primary-color-1);
+}
+
+.form-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--light-effect-1);
+  border: 1px solid var(--primary-color-1);
+  border-radius: 8px;
+  margin-top: -0.5rem;
+}
+
+.info-icon {
+  font-size: 1.2rem;
+  color: var(--primary-color-1);
+}
+
+.form-info span {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.4;
+}
+
+.form-button {
+  position: relative;
+  width: 100%;
+  height: 52px;
+  background: linear-gradient(135deg, var(--primary-color-1) 0%, var(--primary-color-2) 100%);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px var(--light-effect-1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  overflow: hidden;
+}
+
+.form-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.form-button:hover::before {
+  left: 100%;
+}
+
+.form-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px var(--light-effect-1);
+  background: linear-gradient(135deg, var(--primary-color-3) 0%, var(--primary-color-4) 100%);
+}
+
+.form-button:active {
+  transform: translateY(0);
+}
+
+.button-text {
+  position: relative;
+  z-index: 1;
+}
+
+.button-icon {
+  position: relative;
+  z-index: 1;
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.form-button:hover .button-icon {
+  transform: translateX(4px);
+}
+
+.form-footer {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.form-footer p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.5;
 }
 
 /* 响应式设计 */
+@media (max-width: 1024px) {
+  .login-left {
+    padding: 3rem;
+  }
+  
+  .login-right {
+    padding: 3rem;
+  }
+  
+  .logo-text h2 {
+    font-size: 1.75rem;
+  }
+}
+
 @media (max-width: 768px) {
-  form {
-    width: 90%;
-    padding: 30px 20px;
+  .login-content {
+    flex-direction: column;
+    height: 100vh;
+    border-radius: 0;
   }
-
-  .io-t-client-platform-thp-data-sensor-subscription {
-    font-size: 22px;
+  
+  .login-left {
+    width: 100%;
+    padding: 2rem;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
+  
+  .login-right {
+    width: 100%;
+    padding: 2rem;
+  }
+  
+  .logo-section {
+    margin-bottom: 2rem;
+  }
+  
+  .login-illustration {
+    max-width: 250px;
+  }
+  
+  .form-title {
+    font-size: 1.5rem;
+  }
+  
+  .form-subtitle {
+    margin-bottom: 2rem;
+  }
+}
 
-  .illustration {
-    width: 50%;
-    right: 5%;
-    bottom: 5%;
+@media (max-width: 480px) {
+  .login-left {
+    padding: 1.5rem;
+  }
+  
+  .login-right {
+    padding: 1.5rem;
+  }
+  
+  .logo-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+  }
+  
+  .logo-text h2 {
+    font-size: 1.5rem;
+  }
+  
+  .login-illustration {
+    max-width: 200px;
+  }
+  
+  .form-title {
+    font-size: 1.25rem;
+  }
+  
+  .form-input {
+    height: 48px;
+  }
+  
+  .form-button {
+    height: 48px;
   }
 }
